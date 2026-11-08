@@ -1,0 +1,3 @@
+class GetAccount {
+  const GetAccount();
+}

@@ -1,0 +1,3 @@
+class DeliveryAddress {
+  const DeliveryAddress();
+}

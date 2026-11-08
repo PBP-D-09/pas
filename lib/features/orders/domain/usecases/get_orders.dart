@@ -1,0 +1,3 @@
+class GetOrders {
+  const GetOrders();
+}

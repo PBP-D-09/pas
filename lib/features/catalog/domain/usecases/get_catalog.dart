@@ -1,0 +1,3 @@
+class GetCatalog {
+  const GetCatalog();
+}

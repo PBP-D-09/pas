@@ -1,0 +1,57 @@
+# Devenv / direnv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+.direnv/
+
+# Flutter / Dart / Pub
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub/
+.pub-cache/
+.packages
+**/doc/api/
+build/
+coverage/
+.widget_preview/
+
+# Build artifacts
+*.apk
+*.aab
+*.ipa
+app.*.symbols
+app.*.map.json
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+/android/app/outputs/
+/android/app/intermediates/
+**/ios/Flutter/.last_build_id
+
+# Android / devenv local files
+local.properties
+.android/
+.gradle/
+
+# IDE files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Operating system and temporary files
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+.build/
+.buildlog/
+.history/
+.atom/
+.svn/
+.swiftpm/
+migrate_working_dir/

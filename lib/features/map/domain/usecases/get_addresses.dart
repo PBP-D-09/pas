@@ -1,0 +1,3 @@
+class GetAddresses {
+  const GetAddresses();
+}
