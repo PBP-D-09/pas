@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'core/navigation/home_shell.dart';
 import 'core/routing/app_router.dart';
-import 'features/landing/presentation/pages/landing_page.dart';
+import 'core/theme/app_theme.dart';
 
 class SustainaBowlApp extends StatelessWidget {
   const SustainaBowlApp({super.key});
@@ -11,8 +12,8 @@ class SustainaBowlApp extends StatelessWidget {
     return MaterialApp(
       title: 'SustainaBowl',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
-      home: const LandingPage(),
+      theme: AppTheme.light,
+      home: const HomeShell(),
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

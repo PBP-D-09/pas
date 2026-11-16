@@ -11,7 +11,12 @@
     buildTools.version = [ "36.0.0" ];
   };
 
-  packages = [ pkgs.git ];
+  packages = [
+    pkgs.git
+    # Needed to build/run the Linux desktop target (`flutter build linux`).
+    pkgs.gtk3
+    pkgs.pkg-config
+  ];
 
   scripts.flutter-format.exec = ''
     dart format lib test
