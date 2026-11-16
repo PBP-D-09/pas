@@ -21,13 +21,16 @@ SustainaBowl hadir sebagai platform healthy meal ordering platform yang menginte
 
 ## Modul Aplikasi
 
-Modul yang akan diimplementasikan pada aplikasi mobile:
+Modul yang diimplementasikan pada aplikasi mobile beserta pembagian kerja per
+anggota (mengikuti pembagian modul di Proyek Tengah Semester):
 
-- Accounts
-- Catalog
-- Orders
-- Map
-- Reviews
+| Modul    | Anggota                      |
+| -------- | ---------------------------- |
+| Accounts | Joachim Susatiyo             |
+| Catalog  | Muhammad Zaky Robbani        |
+| Orders   | Anantha Kamal Eirian         |
+| Map      | Awiddy Munaya Rajanadoli     |
+| Reviews  | I Komang Arka Darma Laksana  |
 
 
 ## Pengguna
@@ -56,7 +59,31 @@ Django REST Framework API pada project web
 Database Sustainabowl
 ```
 
-Aplikasi mobile tidak menggunakan data statis sebagai sumber data utama. Detail endpoint setiap modul akan ditambahkan setelah kontrak API Django REST Framework disepakati oleh kelompok.
+Aplikasi mobile tidak menggunakan data statis sebagai sumber data utama. Autentikasi memakai DRF Token Authentication: endpoint login/register mengembalikan `token`, dipakai lewat header `Authorization: Token <key>` di setiap requestnya.
+
+Endpoint Django REST Framework modul **Accounts**:
+
+| Endpoint                               | Method           | Akses              |
+| -------------------------------------- | ---------------- | ------------------ |
+| `/api/v1/accounts/register/`           | POST             | Publik             |
+| `/api/v1/accounts/register/tenant/`    | POST             | Publik             |
+| `/api/v1/accounts/login/`              | POST             | Publik             |
+| `/api/v1/accounts/logout/`             | POST             | Login              |
+| `/api/v1/accounts/me/`                 | GET              | Login              |
+| `/api/v1/accounts/profile/`            | GET/PATCH/PUT    | Pelanggan          |
+| `/api/v1/accounts/profile/photo/`      | POST             | Pelanggan          |
+| `/api/v1/accounts/diets/`              | GET              | Pelanggan          |
+| `/api/v1/accounts/diets/toggle/`       | POST             | Pelanggan          |
+| `/api/v1/accounts/allergies/`          | GET/POST         | Pelanggan          |
+| `/api/v1/accounts/allergies/<id>/`     | DELETE           | Pelanggan          |
+| `/api/v1/accounts/eco-points/`         | GET              | Pelanggan          |
+| `/api/v1/accounts/eco-points/history/` | GET              | Pelanggan          |
+| `/api/v1/accounts/eco-points/reset/`   | POST             | Pelanggan          |
+| `/api/v1/accounts/diet-activities/`    | GET              | Pelanggan          |
+| `/api/v1/accounts/recommendations/`    | GET              | Pelanggan          |
+| `/api/v1/accounts/tenant/`             | GET/PATCH/PUT    | Tenant             |
+| `/api/v1/accounts/tenant/photo/`       | POST             | Tenant             |
+| `/api/v1/accounts/admin/insights/`     | GET              | Staff              |
 
 ## Menjalankan Project
 
