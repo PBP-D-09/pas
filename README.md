@@ -85,6 +85,37 @@ Endpoint Django REST Framework modul **Accounts**:
 | `/api/v1/accounts/tenant/photo/`       | POST             | Tenant             |
 | `/api/v1/accounts/admin/insights/`     | GET              | Staff              |
 
+Endpoint Django REST Framework modul **Map** (alamat pengiriman dan lokasi tenan):
+
+| Endpoint                                | Method                  | Akses     |
+| --------------------------------------- | ----------------------- | --------- |
+| `/api/v1/map/tenants/`                  | GET                     | Publik    |
+| `/api/v1/map/tenants/filters/`          | GET                     | Publik    |
+| `/api/v1/map/search/?q=`                | GET                     | Login     |
+| `/api/v1/map/reverse/?lat=&lng=`        | GET                     | Login     |
+| `/api/v1/map/addresses/`                | GET/POST                | Login     |
+| `/api/v1/map/addresses/<id>/`           | GET/PATCH/PUT/DELETE    | Pemilik   |
+| `/api/v1/map/addresses/<id>/default/`   | POST                    | Pemilik   |
+| `/api/v1/map/tenant/location/`          | GET/PUT/PATCH/DELETE    | Tenant    |
+
+Catatan modul Map:
+
+- `tenants/` menerima filter `q`, `city`, `category`, `open_now`, `radius` (1/3/5/10 km), serta `lat` dan `lng` sebagai titik pusat jarak. Nomor telepon tenan hanya ikut dikirim jika request membawa token.
+- `search/` dan `reverse/` meneruskan pencarian ke OpenStreetMap Nominatim lewat server Django (cache 24 jam), jadi aplikasi mobile tidak memanggil Nominatim secara langsung.
+- Alamat milik pengguna lain dibalas `404`. Alamat pertama otomatis menjadi alamat utama, dan hanya ada satu alamat utama per akun.
+- Koordinat dikirim dan diterima sebagai angka, lalu dibulatkan ke 6 angka desimal.
+
+## Pembagian Tugas
+
+### Map (Awiddy Munaya Rajanadoli)
+
+Modul Map menampilkan lokasi tenan pada peta OpenStreetMap dan mengelola alamat pengiriman pengguna di aplikasi mobile.
+
+- **Peta tenan (publik)**: menampilkan pin lokasi tenan beserta jam buka, kategori makanan, radius pengiriman, dan jarak dari posisi pengguna. Daftar dapat difilter berdasarkan kota, kategori, status buka, dan radius.
+- **Alamat pengiriman (pelanggan)**: CRUD alamat pengiriman dengan memilih titik di peta atau mencari alamat lewat Nominatim, mengisi patokan lokasi dan catatan kurir, serta memilih alamat utama yang dipakai saat checkout di modul Orders.
+- **Lokasi tenan (tenant)**: tenant mengatur titik lokasi usaha, alamat, jam operasional, dan radius pengiriman.
+- **Integrasi**: semua data berasal dari endpoint `/api/v1/map/` pada web Django, diakses melalui `ApiClient` di `lib/core/network/` dan Clean Architecture di `lib/features/map/`.
+
 ## Menjalankan Project
 
 Pastikan `devenv` tersedia, lalu jalankan:
