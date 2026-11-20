@@ -17,7 +17,7 @@ void main() {
       'Catalog': 'Catalog module',
       'Orders': 'Orders module',
       'Map': 'Map module',
-      'Reviews': 'Reviews module',
+      'Reviews': 'Pilih menu terlebih dahulu',
     };
 
     for (final entry in cases.entries) {
