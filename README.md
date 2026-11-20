@@ -85,6 +85,22 @@ Endpoint Django REST Framework modul **Accounts**:
 | `/api/v1/accounts/tenant/photo/`       | POST             | Tenant             |
 | `/api/v1/accounts/admin/insights/`     | GET              | Staff              |
 
+Endpoint Django REST Framework modul **Catalog**:
+
+| Endpoint                                             | Method           | Akses              |
+| ---------------------------------------------------- | ---------------- | ------------------ |
+| `/api/v1/catalog/tenants/<id>/,`                     | GET              | Login              |
+| `/api/v1/catalog/tenants/<id>/manage/`               | GET              | Tenant             |
+| `/api/v1/catalog/tenants/menu-item/add/`             | POST             | Tenant             |
+| `/api/v1/catalog/tenants/menu-item/<id>/edit/`       | GET              | Tenant             |
+| `/api/v1/catalog/tenants/menu-item/<id>/save/`       | PATCH            | Tenant             |
+| `/api/v1/catalog/tenants/menu-item/<id>/delete/`     | DELETE           | Tenant             |
+| `/api/v1/catalog/tenants/menu-category/add/`         | POST             | Tenant             |
+| `/api/v1/catalog/tenants/menu-category/<id>/edit/`   | GET              | Tenant             |
+| `/api/v1/catalog/tenants/menu-category/save/`        | POST             | Tenant             |
+| `/api/v1/catalog/tenants/menu-category/<id>/save/`   | PATCH            | Tenant             |
+| `/api/v1/catalog/tenants/menu-category/<id>/delete/` | DELETE           | Tenant             |
+
 Endpoint Django REST Framework modul **Map** (alamat pengiriman dan lokasi tenan):
 
 | Endpoint                                | Method                  | Akses     |
@@ -106,6 +122,15 @@ Catatan modul Map:
 - Koordinat dikirim dan diterima sebagai angka, lalu dibulatkan ke 6 angka desimal.
 
 ## Pembagian Tugas
+
+### Catalog (Muhammad Zaky Robbani)
+
+Modul Catalog menampilkan restoran tenan yang terdaftar dan menampilkan menu item dari setiap tenan
+
+- **katalog tenan**: menampilkan semua tenan yang terdaftar sebagai sebuah card dengan photo restaurant, review, dan berbagai kategori kuliner yang disediakan.
+- **katalog menu tenan**: menampilkan semua menu yang telah dibuat oleh tenan yang dapat diorder dengan mengeklik card menu tersebut. memerlukan login untuk mengakses
+- **management item menu dan category**: untuk setiap tenan yang mengakses halaman katalog menunya masing-masing, terdapat opsi untuk berpindah halaman untuk mengurus pembuatan menu baru dan kategori baru per tenan
+- **integrasi**: data tenan berasal dari endpoint `/api/v1/catalog`.
 
 ### Map (Awiddy Munaya Rajanadoli)
 
