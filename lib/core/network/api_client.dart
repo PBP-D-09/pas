@@ -5,4 +5,11 @@ abstract interface class ApiClient {
     String path, {
     Map<String, Object?> body = const <String, Object?>{},
   });
+
+  Future<Object?> patch(
+    String path, {
+    Map<String, Object?> body = const <String, Object?>{},
+  });
+
+  Future<Object?> delete(String path);
 }

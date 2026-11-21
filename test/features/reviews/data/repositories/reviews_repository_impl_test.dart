@@ -45,4 +45,17 @@ class _FakeApiClient implements ApiClient {
   }) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Object?> patch(
+    String path, {
+    Map<String, Object?> body = const <String, Object?>{},
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Object?> delete(String path) {
+    throw UnimplementedError();
+  }
 }
