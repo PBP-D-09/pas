@@ -121,6 +121,28 @@ Catatan modul Map:
 - Alamat milik pengguna lain dibalas `404`. Alamat pertama otomatis menjadi alamat utama, dan hanya ada satu alamat utama per akun.
 - Koordinat dikirim dan diterima sebagai angka, lalu dibulatkan ke 6 angka desimal.
 
+Endpoint Django REST Framework modul **Orders** (keranjang, checkout, dan riwayat pesanan):
+
+| Endpoint                                  | Method        | Akses     |
+| ----------------------------------------- | ------------- | --------- |
+| `/api/v1/orders/`                         | GET           | Pelanggan |
+| `/api/v1/orders/<uuid>/`                  | GET           | Pemilik   |
+| `/api/v1/orders/<uuid>/cancel/`           | POST          | Pemilik   |
+| `/api/v1/orders/<uuid>/note/`             | PATCH         | Pemilik   |
+| `/api/v1/orders/<uuid>/reorder/`          | POST          | Pemilik   |
+| `/api/v1/orders/cart/`                    | GET           | Pelanggan |
+| `/api/v1/orders/cart/items/`              | POST          | Pelanggan |
+| `/api/v1/orders/cart/items/<uuid>/`       | PATCH/DELETE  | Pemilik   |
+| `/api/v1/orders/checkout/`                | GET/POST      | Pelanggan |
+
+Catatan modul Orders:
+
+- `GET /api/v1/orders/` menerima filter `status` (`pending`, `processing`, `on_the_way`, `delivered`, `cancelled`) dan `date_range` (`today`, `7_days`, `30_days`, atau `custom` dengan `start_date`/`end_date` berformat `YYYY-MM-DD`). Respons juga berisi `status_counts` dan jumlah wadah reusable yang belum dikembalikan.
+- `GET checkout/` mengembalikan isi keranjang, alamat tersimpan (dari modul Map) beserta ongkir dan estimasi waktu, serta pilihan kemasan. Reusable container otomatis `disabled` jika stok wadah salah satu tenan habis. `POST checkout/` menerima `address_id`, `packaging_type`, dan `delivery_notes`, lalu membalas pesanan baru dengan status `201`.
+- Harga, ongkir, biaya kemasan, dan Eco Points selalu dihitung ulang di server. Aplikasi mobile tidak pernah mengirim angka harga.
+- Pesanan hanya bisa dibatalkan dan catatannya hanya bisa diubah selama statusnya `pending`. Pesanan, item keranjang, dan alamat milik pengguna lain dibalas `404`, dan akun tenan dibalas `403`.
+- Error validasi memakai format DRF (`{"detail": "..."}` atau `{"field": ["..."]}`). `HttpApiClient` menampilkan pesan tersebut apa adanya di aplikasi.
+
 ## Pembagian Tugas
 
 ### Catalog (Muhammad Zaky Robbani)
@@ -140,6 +162,25 @@ Modul Map menampilkan lokasi tenan pada peta OpenStreetMap dan mengelola alamat 
 - **Alamat pengiriman (pelanggan)**: CRUD alamat pengiriman dengan memilih titik di peta atau mencari alamat lewat Nominatim, mengisi patokan lokasi dan catatan kurir, serta memilih alamat utama yang dipakai saat checkout di modul Orders.
 - **Lokasi tenan (tenant)**: tenant mengatur titik lokasi usaha, alamat, jam operasional, dan radius pengiriman.
 - **Integrasi**: semua data berasal dari endpoint `/api/v1/map/` pada web Django, diakses melalui `ApiClient` di `lib/core/network/` dan Clean Architecture di `lib/features/map/`.
+
+### Orders (Anantha Kamal Eirian)
+
+Modul Orders menangani keranjang belanja, checkout dengan kemasan ramah lingkungan, dan riwayat pesanan pelanggan, sama seperti halaman Orders di web.
+
+- **Keranjang**: melihat isi keranjang, mengubah jumlah item dengan stepper, dan menghapus item. Modul lain dapat menambahkan menu ke keranjang melalui `showAddToCartDialog()` di `lib/features/orders/presentation/widgets/add_to_cart_dialog.dart`, yaitu dialog konfirmasi jumlah sebelum menambahkan ke keranjang.
+- **Checkout**: memilih alamat pengiriman tersimpan (beserta ongkir dan estimasi waktu), memilih reusable container atau compostable box (beserta biaya dan Eco Points), serta menulis catatan pengiriman. Setelah pesanan dibuat, aplikasi menampilkan halaman konfirmasi.
+- **Riwayat pesanan (My orders)**: daftar pesanan dengan filter status dan rentang tanggal, pengingat pengembalian wadah reusable, pembatalan pesanan `pending`, pengubahan catatan pengiriman, pesan ulang (Order again), serta tombol Review yang membuka halaman Reviews untuk menu dari pesanan yang sudah `delivered`.
+- **Integrasi**: semua data berasal dari endpoint `/api/v1/orders/` pada web Django dan memakai Clean Architecture di `lib/features/orders/`.
+
+### Autentikasi sementara untuk pengembangan
+
+`HttpApiClient` mengirim header `Authorization: Token <key>` dari `AuthToken.current` (`lib/core/network/auth_token.dart`). Modul Accounts cukup mengisi `AuthToken.current` setelah login dan mengosongkannya saat logout. Selama alur login belum tersedia, token dapat diberikan saat menjalankan aplikasi:
+
+```bash
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=API_TOKEN=<token>
+```
+
+Token didapat dari `POST /api/v1/accounts/login/` (misalnya dengan akun demo `customer@demo.sustainabowl.test` / `Demo123!` setelah `python manage.py seed_demo` di repo web). Tanpa token, halaman Orders menampilkan ajakan login dan tidak memanggil API.
 
 ## Menjalankan Project
 
