@@ -15,7 +15,8 @@ void main() {
     final cases = {
       'Accounts': 'Accounts module',
       'Catalog': 'Catalog module',
-      'Orders': 'Orders module',
+      // Tanpa token login, tab Orders menampilkan ajakan login.
+      'Orders': 'Log in to see your orders',
       'Map': 'Map module',
       'Reviews': 'Pilih menu terlebih dahulu',
     };
